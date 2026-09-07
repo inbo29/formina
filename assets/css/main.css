@@ -272,7 +272,7 @@ img { max-width: 100%; height: auto; display: block; }
   height: 1px;
   background: currentColor;
   opacity: .18;
-  margin: var(--sp-5) auto;
+  margin: var(--sp-4) auto 0;
   border: 0;
 }
 
@@ -498,12 +498,19 @@ img { max-width: 100%; height: auto; display: block; }
    사과 씬(S10)이 여기 해당합니다. 여백이 넓을수록 문장이 무거워집니다.
    ------------------------------------------------------------------------ */
 
-.scene--text-only {
-  padding-top: var(--sp-7);
-  padding-bottom: var(--sp-7);
+/* 사진이 없는 씬들. 여백이 넉넉해야 문장이 무거워지지만, 너무 넓으면
+   "사진이 빠진 자리"처럼 읽힙니다. 사진 있는 씬보다 조금 좁게 잡습니다. */
+.scene--text-only,
+.scene--quote,
+.scene--letter {
+  padding-top: var(--sp-6);
+  padding-bottom: var(--sp-5);
 }
 
 .scene--text-only .headline { margin-bottom: var(--sp-4); }
+
+/* 마지막 씬 뒤는 넉넉하게 — 페이지가 뚝 끊기지 않도록 */
+.story > .scene:last-child { padding-bottom: var(--sp-7); }
 
 /* --- 절정 씬의 중앙 정렬 --------------------------------------------------
    .scene--dark 가 배경과 레이아웃을 담당하고, 여기서는 운문 폭만 제한합니다.
@@ -568,6 +575,17 @@ img { max-width: 100%; height: auto; display: block; }
 
 @media (min-width: 720px) {
   .scene { padding-top: var(--sp-7); padding-bottom: var(--sp-7); }
+
+  /* 넓은 화면에서는 여백이 더 벌어져 빈 자리가 더 크게 느껴집니다.
+     사진 없는 씬은 여기서도 좁게 유지합니다. */
+  .scene--text-only,
+  .scene--quote,
+  .scene--letter {
+    padding-top: var(--sp-6);
+    padding-bottom: var(--sp-5);
+  }
+
+  .story > .scene:last-child { padding-bottom: var(--sp-7); }
 
   .scene--photo-split .figure {
     display: grid;
