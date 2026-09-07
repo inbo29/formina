@@ -521,10 +521,12 @@ img { max-width: 100%; height: auto; display: block; }
    Motion — transform / opacity 만 사용합니다.
    ========================================================================== */
 
+/* will-change 는 쓰지 않습니다. 이 페이지에는 등장 대기 중인 요소가 100개가
+   넘는데, 전부 합성 레이어로 올리면 저사양 휴대폰에서 메모리가 모자라
+   일부 요소가 아예 그려지지 않습니다(빈 자리로 보임). */
 .reveal {
   opacity: 0;
   transition: opacity .85s var(--ease), transform .85s var(--ease);
-  will-change: opacity, transform;
 }
 
 .reveal[data-enter="fade"]       { transform: none; }

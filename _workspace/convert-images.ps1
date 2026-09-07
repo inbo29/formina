@@ -2,13 +2,28 @@
 # - 긴 변 1600px, JPEG 품질 82
 # - EXIF 회전 정보 적용 (안 하면 세로 사진이 눕습니다)
 # - 원본은 _originals/ 로 이동 (보존)
+#
+# 사용법:
+#   powershell -File _workspace/convert-images.ps1
+#   powershell -File _workspace/convert-images.ps1 -MapFile _workspace/01_archivist_assets_new.tsv
+#
+# 사진을 추가할 때는 새 매핑 파일만 만들어 넘기세요. 전체 목록으로 돌리면
+# 이미 변환·이동된 파일이 전부 "없음"으로 잡혀 로그가 무의미해집니다.
+
+param(
+    [string]$MapFile = ""
+)
 
 Add-Type -AssemblyName System.Drawing
 
 $Root    = "d:\workspace2\formina"
 $ImgDir  = Join-Path $Root "assets\img"
 $OrigDir = Join-Path $Root "_originals"
-$MapFile = Join-Path $Root "_workspace\01_archivist_assets.tsv"
+if ([string]::IsNullOrWhiteSpace($MapFile)) {
+    $MapFile = Join-Path $Root "_workspace\01_archivist_assets.tsv"
+} elseif (-not [System.IO.Path]::IsPathRooted($MapFile)) {
+    $MapFile = Join-Path $Root $MapFile
+}
 $MaxEdge = 1600
 $Quality = 82L
 

@@ -235,19 +235,61 @@
 
   var targets = document.querySelectorAll('.reveal');
 
-  if (!('IntersectionObserver' in window)) {
+  function revealAll() {
     Array.prototype.forEach.call(targets, function (t) { t.classList.add('in'); });
+  }
+
+  if (!('IntersectionObserver' in window)) {
+    revealAll();
     videos.forEach(function (v) { v.play().catch(function () {}); });
   } else {
+    // threshold 0 을 씁니다. 12% 처럼 비율로 잡으면 화면보다 훨씬 긴 사진은
+    // 그 비율만큼 보이는 순간이 오지 않아 영영 나타나지 않습니다.
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
         e.target.classList.add('in');
         io.unobserve(e.target);
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    }, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
 
     Array.prototype.forEach.call(targets, function (t) { io.observe(t); });
+
+    // 안전망: 어떤 이유로든 등장 처리가 안 된 요소가 화면 근처에 있으면
+    // 그냥 보여줍니다. 연출이 조금 덜 예쁜 것보다 사진이 안 보이는 게 훨씬 나쁩니다.
+    function sweep() {
+      var vh = window.innerHeight || 800;
+      Array.prototype.forEach.call(targets, function (t) {
+        if (t.classList.contains('in')) return;
+        var r = t.getBoundingClientRect();
+        if (r.top < vh * 1.2 && r.bottom > -vh * 0.2) {
+          t.classList.add('in');
+          io.unobserve(t);
+        }
+      });
+    }
+    window.addEventListener('load', function () {
+      window.setTimeout(sweep, 400);
+      window.setTimeout(sweep, 2000);
+    });
+
+    // 스크롤 중에도 확인합니다. 전부 나타나면 스스로 떨어져 나가므로
+    // 끝까지 읽고 나면 남는 부담이 없습니다.
+    var sweeping = false;
+    function onScroll() {
+      if (sweeping) return;
+      sweeping = true;
+      window.setTimeout(function () {
+        sweep();
+        sweeping = false;
+        var left = 0;
+        Array.prototype.forEach.call(targets, function (t) {
+          if (!t.classList.contains('in')) left++;
+        });
+        if (left === 0) window.removeEventListener('scroll', onScroll);
+      }, 300);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
 
     // 화면에 보일 때만 영상을 재생합니다. 안 보이는 영상이 계속 돌면
     // 데이터와 배터리를 낭비합니다.
