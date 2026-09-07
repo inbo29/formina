@@ -3,14 +3,13 @@
 window.SCENES =
 {
   "meta": {
-    "title_mn": "Зул-Эрдэнэ минь",
+    "title_mn": "Зул-Эрдэнэ",
     "subtitle_mn": "Долоон жилийн тэмдэглэл",
-    "og_title": "Зул-Эрдэнэ минь · Төрсөн өдрийн мэнд хүргэе",
+    "og_title": "Зул-Эрдэнэ · Төрсөн өдрийн мэнд хүргэе",
     "og_description": "Долоон жилийн тэмдэглэл · 2019 – 2026",
     "og_image": "assets/img/og.jpg",
     "playlist": ["assets/audio/bgm-01.mp3", "assets/audio/bgm-02.mp3"],
-    "audio_label_mn": "Хөгжимтэй үзэх",
-    "silent_label_mn": "Дуугүй үзэх"
+    "audio_label_mn": "Хөгжимтэй үзэх"
   },
   "scenes": [
     {
@@ -18,9 +17,9 @@ window.SCENES =
       "layout": "cover",
       "intensity": 3,
       "eyebrow_mn": "1989 · 09 · 07",
-      "headline_mn": "Зул-Эрдэнэ минь",
+      "headline_mn": "Зул-Эрдэнэ",
       "body_mn": "Долоон жилийн тэмдэглэл",
-      "headline_ko": "나의 줄-에르데네",
+      "headline_ko": "줄-에르데네",
       "body_ko": "7년의 기록",
       "media": { "src": "assets/img/2026-flower-01.jpg", "w": 1200, "h": 1600, "alt_mn": "Хоёр үр чамд зэрлэг цэцэг барьж байна" },
       "scroll_hint_mn": "доош гүйлгэнэ үү"

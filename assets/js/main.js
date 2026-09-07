@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Зул-Эрдэнэ минь — 렌더링 + 스크롤 연출 + 캐로셀 + 영상 + BGM 플레이리스트
+   Зул-Эрдэнэ — 렌더링 + 스크롤 연출 + 캐로셀 + 영상 + BGM 플레이리스트
    문구를 바꾸려면 data/scenes.js 만 고치면 됩니다. 이 파일은 건드릴 일이 없습니다.
    ========================================================================== */
 
@@ -265,7 +265,6 @@
   var toggle = document.getElementById('audio-toggle');
   var intro = document.getElementById('intro');
   var btnMusic = document.getElementById('start-music');
-  var btnSilent = document.getElementById('start-silent');
 
   var playlist = (DATA.meta && DATA.meta.playlist) || [];
   var trackIndex = 0;
@@ -302,14 +301,12 @@
         toggle.hidden = true;
       }
     });
-  } else {
-    btnMusic.hidden = true;
-    btnSilent.textContent = 'Үзэж эхлэх';
-    btnSilent.className = 'intro-btn';
   }
 
+  // 음악 파일이 없거나 깨졌을 때도 들어갈 버튼은 남아 있어야 합니다.
+  // 시작 버튼이 하나뿐이므로, 이 버튼이 사라지면 페이지에 들어갈 방법이 없어집니다.
   if (DATA.meta && DATA.meta.audio_label_mn) btnMusic.textContent = DATA.meta.audio_label_mn;
-  if (DATA.meta && DATA.meta.silent_label_mn) btnSilent.textContent = DATA.meta.silent_label_mn;
+  if (!hasAudio) btnMusic.textContent = 'Үзэж эхлэх';
 
   function closeIntro() {
     intro.classList.add('is-hidden');
@@ -320,15 +317,9 @@
   document.body.classList.add('is-locked');
 
   btnMusic.addEventListener('click', function () {
-    playCurrent();
-    if (hasAudio) toggle.hidden = false;
-    closeIntro();
-  });
-
-  btnSilent.addEventListener('click', function () {
     if (hasAudio) {
+      playCurrent();
       toggle.hidden = false;
-      toggle.classList.add('is-muted');
     }
     closeIntro();
   });
