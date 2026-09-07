@@ -31,7 +31,14 @@
     // 사진의 실제 비율을 틀에 그대로 씁니다. 고정 비율로 잘라내면
     // 가로 사진에서 사람 얼굴이 화면 밖으로 나갑니다.
     // 비율을 미리 알고 있으므로 로딩 중 화면이 튀지도 않습니다.
-    if (media.w && media.h) frame.style.aspectRatio = media.w + ' / ' + media.h;
+    //
+    // 높이 제한은 max-height 가 아니라 max-width 로 겁니다. max-height 로 누르면
+    // 틀은 폭을 유지한 채 사진만 줄어들어 좌우에 빈 띠가 남습니다.
+    // 비율에 맞춰 폭을 좁히면 틀과 사진이 정확히 일치해 여백이 생기지 않습니다.
+    if (media.w && media.h) {
+      frame.style.aspectRatio = media.w + ' / ' + media.h;
+      frame.style.maxWidth = 'calc(var(--photo-max-h) * ' + (media.w / media.h).toFixed(4) + ')';
+    }
 
     var img = el('img');
     img.src = media.src;
