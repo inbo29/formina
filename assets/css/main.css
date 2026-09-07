@@ -317,23 +317,25 @@ img { max-width: 100%; height: auto; display: block; }
 
 .scene--photo-full .figure { margin-bottom: var(--sp-4); }
 
+/* 비율은 JS가 사진마다 실제 크기로 지정합니다(main.js figure()).
+   아래 값은 크기를 모를 때만 쓰이는 예비값입니다. */
 .photo-frame {
   position: relative;
   overflow: hidden;
   border-radius: var(--img-radius);
   background: var(--paper2);
   aspect-ratio: 3 / 2;
+  /* 세로로 아주 긴 사진이 화면을 통째로 먹지 않게 */
+  max-height: 78svh;
 }
 
-.scene--photo-split .photo-frame,
-.scene--photo-full .photo-frame,
-.scene--cover .photo-frame { aspect-ratio: 4 / 5; }
-
+/* 틀이 사진 비율과 같으므로 contain 이어도 여백 없이 꽉 찹니다.
+   위 max-height 에 걸린 경우에만 살짝 여백이 생기고, 대신 얼굴이 잘리지 않습니다. */
 .photo-frame img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 35%;
+  object-fit: contain;
+  object-position: center;
   filter: saturate(.92) contrast(1.02) sepia(.06);
 }
 
@@ -377,6 +379,9 @@ img { max-width: 100%; height: auto; display: block; }
 
 .carousel-track {
   display: flex;
+  /* 슬라이드마다 비율이 다르므로 가장 높은 것에 트랙 높이를 맞추고
+     나머지는 세로 가운데 정렬합니다. 넘길 때 높이가 출렁이지 않습니다. */
+  align-items: center;
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
@@ -392,17 +397,9 @@ img { max-width: 100%; height: auto; display: block; }
   scroll-snap-stop: always;
 }
 
-/* 캐로셀 안에는 가로·세로 사진이 섞여 있습니다. 잘라내면 사람이 화면 밖으로
-   나가므로, 높이만 고정하고 사진 전체를 보여줍니다. */
-.carousel-slide .photo-frame {
-  aspect-ratio: 4 / 5;
-  background: var(--paper2);
-}
-
-.carousel-slide .photo-frame img {
-  object-fit: contain;
-  object-position: center;
-}
+/* 캐로셀 안에는 가로·세로 사진이 섞여 있습니다. 각 사진이 자기 비율을
+   그대로 쓰고, 트랙이 가장 높은 슬라이드에 맞춰집니다. 아무것도 잘리지 않습니다. */
+.carousel-slide .photo-frame { background: var(--paper2); }
 
 .carousel-dots {
   display: flex;

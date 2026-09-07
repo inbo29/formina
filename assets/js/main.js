@@ -28,6 +28,11 @@
     var frame = el('div', 'photo-frame');
     frame.setAttribute('data-label', label || '');
 
+    // 사진의 실제 비율을 틀에 그대로 씁니다. 고정 비율로 잘라내면
+    // 가로 사진에서 사람 얼굴이 화면 밖으로 나갑니다.
+    // 비율을 미리 알고 있으므로 로딩 중 화면이 튀지도 않습니다.
+    if (media.w && media.h) frame.style.aspectRatio = media.w + ' / ' + media.h;
+
     var img = el('img');
     img.src = media.src;
     if (media.w) img.width = media.w;
