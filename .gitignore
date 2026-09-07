@@ -1,0 +1,8 @@
+Thumbs.db
+.DS_Store
+*.HEIC
+*.heic
+node_modules/
+
+# 원본 사진·영상 (275MB) — 웹용은 assets/img 에 있습니다
+_originals/

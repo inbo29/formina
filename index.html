@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Зул-Эрдэнэ минь</title>
+
+<!-- 비공개 선물 페이지 — 검색 엔진 색인 차단 -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Зул-Эрдэнэ минь · Төрсөн өдрийн мэнд хүргэе">
+<meta property="og:description" content="Долоон жилийн тэмдэглэл · 2019 – 2026">
+<!-- 배포 후 아래 URL의 {user}/{repo}를 실제 값으로 바꾸세요. 상대 경로는 미리보기에서 무시됩니다 -->
+<meta property="og:image" content="https://inbo29.github.io/formina/assets/img/og.jpg">
+<meta name="theme-color" content="#F7F3EC">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<button id="audio-toggle" class="audio-toggle" hidden aria-label="Хөгжим">
+  <span class="audio-icon" aria-hidden="true"></span>
+</button>
+
+<main id="story" class="story"></main>
+
+<div id="intro" class="intro">
+  <div class="intro-inner">
+    <p class="intro-eyebrow">1989 · 09 · 07</p>
+    <h1 class="intro-title">Зул-Эрдэнэ минь</h1>
+    <p class="intro-sub">Долоон жилийн тэмдэглэл</p>
+    <div class="intro-rule" aria-hidden="true"></div>
+    <button id="start-music" class="intro-btn">Хөгжимтэй үзэх</button>
+    <button id="start-silent" class="intro-btn intro-btn--ghost">Дуугүй үзэх</button>
+  </div>
+</div>
+
+<audio id="bgm" loop preload="none"></audio>
+
+<!-- 문구 데이터. 이 파일만 고치면 화면 글이 바뀝니다. main.js 보다 먼저 와야 합니다. -->
+<script src="data/scenes.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

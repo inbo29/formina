@@ -1,0 +1,593 @@
+/* ==========================================================================
+   Зул-Эрдэнэ минь — Warm Paper art direction
+   팔레트/타이포/모션 토큰은 여기서만 바꾸면 전체에 반영됩니다.
+   ========================================================================== */
+
+:root {
+  /* 팔레트 — Warm Paper */
+  --paper:  #F7F3EC;
+  --paper2: #EFE8DC;
+  --ink:    #2E2A26;
+  --muted:  #8B8177;
+  --accent: #A8563F;
+  --dark:   #1B1815;
+  --dark-ink: #EDE7DC;
+
+  /* 타이포 */
+  --font-mn:  "Noto Serif", Georgia, "Times New Roman", serif;
+  --font-num: "Cormorant Garamond", Georgia, serif;
+
+  --fs-display: clamp(30px, 8.5vw, 46px);
+  --fs-h1:      clamp(22px, 6vw, 30px);
+  --fs-body:    clamp(15px, 4.2vw, 17px);
+  --fs-verse:   clamp(16px, 4.6vw, 19px);
+  --fs-eyebrow: clamp(11px, 3vw, 12px);
+  --fs-caption: 12px;
+
+  --lh-body:  1.95;
+  --lh-verse: 2.15;
+
+  /* 여백 */
+  --sp-1: 8px;  --sp-2: 16px; --sp-3: 24px;
+  --sp-4: 40px; --sp-5: 64px; --sp-6: 96px; --sp-7: 140px;
+
+  --content-max: 640px;
+  --gutter: 24px;
+
+  --img-radius: 2px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* -------------------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-mn);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body.is-locked { overflow: hidden; }
+
+img { max-width: 100%; height: auto; display: block; }
+
+/* ==========================================================================
+   Intro overlay — 오디오 자동재생이 불가능하므로 제스처 게이트로 시작
+   ========================================================================== */
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--paper);
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
+  transition: opacity .9s var(--ease), visibility .9s;
+}
+
+.intro.is-hidden { opacity: 0; visibility: hidden; }
+
+.intro-inner { text-align: center; max-width: 380px; }
+
+.intro-eyebrow {
+  font-family: var(--font-num);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: .28em;
+  color: var(--muted);
+  margin: 0 0 var(--sp-3);
+}
+
+.intro-title {
+  font-size: var(--fs-display);
+  font-weight: 400;
+  line-height: 1.3;
+  margin: 0 0 var(--sp-2);
+  letter-spacing: .01em;
+}
+
+.intro-sub {
+  font-size: var(--fs-body);
+  color: var(--muted);
+  margin: 0;
+}
+
+.intro-rule {
+  width: 40px;
+  height: 1px;
+  background: var(--muted);
+  opacity: .5;
+  margin: var(--sp-4) auto;
+}
+
+.intro-btn {
+  display: block;
+  width: 100%;
+  margin: 0 auto var(--sp-2);
+  padding: 14px 24px;
+  font-family: var(--font-mn);
+  font-size: 15px;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: opacity .3s var(--ease);
+}
+
+.intro-btn:hover { opacity: .85; }
+
+.intro-btn--ghost {
+  color: var(--muted);
+  background: transparent;
+  border-color: transparent;
+  font-size: 13px;
+  padding: 8px;
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Audio toggle — 항상 보이는 곳에. 공공장소에서 열릴 수 있습니다.
+   ========================================================================== */
+
+.audio-toggle {
+  position: fixed;
+  top: max(16px, env(safe-area-inset-top));
+  right: 16px;
+  z-index: 90;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(247, 243, 236, .82);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: opacity .3s var(--ease);
+}
+
+.audio-icon {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 1px solid var(--ink);
+  position: relative;
+}
+
+.audio-icon::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--ink);
+  transition: transform .25s var(--ease), opacity .25s;
+}
+
+.audio-toggle.is-muted .audio-icon::after { transform: scale(.3); opacity: .35; }
+
+/* ==========================================================================
+   Scenes
+   ========================================================================== */
+
+.story { display: block; }
+
+.scene {
+  position: relative;
+  padding: var(--sp-6) var(--gutter);
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+
+.scene--cover {
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  padding-top: var(--sp-7);
+  padding-bottom: var(--sp-7);
+  text-align: center;
+}
+
+.scene--letter { padding-bottom: var(--sp-7); }
+
+/* 절정 씬 — 유일하게 어두워지는 지점. 이 낙차가 감정을 만듭니다. */
+.scene--dark {
+  max-width: none;
+  background: var(--dark);
+  color: var(--dark-ink);
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  text-align: center;
+  padding: var(--sp-7) var(--gutter);
+  margin-top: var(--sp-5);
+  margin-bottom: var(--sp-5);
+}
+
+.scene--dark .eyebrow { color: rgba(237, 231, 220, .55); }
+.scene--dark .verse-caption { color: rgba(237, 231, 220, .5); }
+
+/* --- 공통 텍스트 요소 ---------------------------------------------------- */
+
+.eyebrow {
+  font-family: var(--font-num);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: .28em;
+  color: var(--muted);
+  margin: 0 0 var(--sp-2);
+}
+
+.headline {
+  font-size: var(--fs-h1);
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: .01em;
+  margin: 0 0 var(--sp-3);
+  white-space: pre-line;
+}
+
+.scene--cover .headline { font-size: var(--fs-display); }
+
+.body {
+  margin: 0;
+  white-space: pre-line;
+  text-wrap: pretty;
+}
+
+.scene--cover .body { color: var(--muted); }
+
+.after {
+  margin: var(--sp-4) 0 0;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.signature {
+  margin: var(--sp-5) 0 0;
+  color: var(--muted);
+  font-size: var(--fs-caption);
+  letter-spacing: .08em;
+}
+
+.scroll-hint {
+  margin: var(--sp-6) 0 0;
+  font-size: var(--fs-caption);
+  letter-spacing: .2em;
+  color: var(--muted);
+  opacity: .7;
+}
+
+/* --- 구분자 (Улзий 매듭 모티프를 아주 옅게) ------------------------------ */
+
+.rule {
+  width: 100%;
+  max-width: 120px;
+  height: 1px;
+  background: currentColor;
+  opacity: .18;
+  margin: var(--sp-5) auto;
+  border: 0;
+}
+
+/* --- 운문 조판 -----------------------------------------------------------
+   두운은 각 행의 첫 글자가 세로로 정렬될 때 눈에도 보입니다.
+   행이 접히면 그 구조가 사라지므로 크기를 억제합니다.
+   ------------------------------------------------------------------------ */
+
+.verse {
+  margin: var(--sp-4) 0 0;
+  font-size: var(--fs-verse);
+  line-height: var(--lh-verse);
+  font-style: italic;
+  text-wrap: balance;
+}
+
+.scene--dark .verse { font-style: normal; }
+
+.verse .line { display: block; }
+
+.verse-caption {
+  margin: var(--sp-3) 0 0;
+  font-size: var(--fs-caption);
+  font-style: normal;
+  letter-spacing: .06em;
+  color: var(--muted);
+}
+
+/* --- 인용 씬 (아내분의 원본 시) ------------------------------------------ */
+
+.scene--quote .verse-wrap {
+  border-left: 1px solid var(--accent);
+  padding-left: var(--sp-3);
+  margin-top: var(--sp-4);
+}
+
+.scene--quote .verse { margin-top: 0; }
+
+/* --- 사진 --------------------------------------------------------------- */
+
+.figure { margin: 0 0 var(--sp-4); }
+
+.scene--photo-full .figure { margin-bottom: var(--sp-4); }
+
+.photo-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--img-radius);
+  background: var(--paper2);
+  aspect-ratio: 3 / 2;
+}
+
+.scene--photo-split .photo-frame,
+.scene--photo-full .photo-frame,
+.scene--cover .photo-frame { aspect-ratio: 4 / 5; }
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  filter: saturate(.92) contrast(1.02) sepia(.06);
+}
+
+/* 사진이 아직 없을 때 — 흉하지 않아야 나중에 넣어도 됩니다 */
+.photo-frame.is-empty {
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(139, 129, 119, .3);
+  background:
+    repeating-linear-gradient(45deg,
+      var(--paper2) 0 6px, var(--paper) 6px 12px);
+}
+
+.photo-frame.is-empty::after {
+  content: attr(data-label);
+  font-family: var(--font-num);
+  font-size: 13px;
+  letter-spacing: .24em;
+  color: var(--muted);
+}
+
+.photo-frame.is-empty img { display: none; }
+
+.caption {
+  margin: var(--sp-1) 0 0;
+  font-size: var(--fs-caption);
+  color: var(--muted);
+}
+
+/* --- 캐로셀 ---------------------------------------------------------------
+   라이브러리 없이 CSS scroll-snap 으로 구현합니다. 터치 스와이프가 브라우저
+   기본 동작이라 저사양 기기에서도 부드럽습니다.
+   ------------------------------------------------------------------------ */
+
+.scene--carousel { padding-top: var(--sp-6); }
+
+.carousel {
+  position: relative;
+  margin-top: var(--sp-3);
+}
+
+.carousel-track {
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.carousel-track::-webkit-scrollbar { display: none; }
+
+.carousel-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+/* 캐로셀 안에는 가로·세로 사진이 섞여 있습니다. 잘라내면 사람이 화면 밖으로
+   나가므로, 높이만 고정하고 사진 전체를 보여줍니다. */
+.carousel-slide .photo-frame {
+  aspect-ratio: 4 / 5;
+  background: var(--paper2);
+}
+
+.carousel-slide .photo-frame img {
+  object-fit: contain;
+  object-position: center;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--sp-2);
+}
+
+.carousel-dot {
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--muted);
+  opacity: .3;
+  cursor: pointer;
+  transition: opacity .25s var(--ease), transform .25s var(--ease);
+}
+
+.carousel-dot.is-on { opacity: .9; transform: scale(1.35); }
+
+.carousel-count {
+  margin-top: var(--sp-1);
+  text-align: center;
+  font-family: var(--font-num);
+  font-size: 11px;
+  letter-spacing: .18em;
+  color: var(--muted);
+}
+
+/* 좌우 버튼은 마우스가 있는 넓은 화면에서만 */
+.carousel-arrow { display: none; }
+
+@media (min-width: 720px) and (hover: hover) {
+  .carousel-arrow {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    top: 50%;
+    width: 36px;
+    height: 36px;
+    margin-top: -18px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(247, 243, 236, .9);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .25s var(--ease);
+  }
+
+  .carousel:hover .carousel-arrow { opacity: 1; }
+
+  .carousel-arrow--prev { left: 8px; }
+  .carousel-arrow--next { right: 8px; }
+
+  .carousel-arrow::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-top: 1px solid var(--ink);
+    border-right: 1px solid var(--ink);
+  }
+
+  .carousel-arrow--prev::before { transform: rotate(-135deg); margin-left: 3px; }
+  .carousel-arrow--next::before { transform: rotate(45deg); margin-right: 3px; }
+}
+
+/* --- 영상 -----------------------------------------------------------------
+   무음 자동재생만 모바일에서 허용됩니다. 영상은 무음으로 인코딩되어 있어
+   배경음악과 겹치지 않습니다.
+   ------------------------------------------------------------------------ */
+
+.scene--video { padding-top: var(--sp-6); }
+
+.video-frame {
+  overflow: hidden;
+  border-radius: var(--img-radius);
+  background: var(--dark);
+}
+
+.video-frame video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.video-frame.is-empty {
+  aspect-ratio: 4 / 5;
+  display: grid;
+  place-items: center;
+  background: var(--paper2);
+}
+
+/* --- 텍스트 전용 씬 -------------------------------------------------------
+   사과 씬(S10)이 여기 해당합니다. 여백이 넓을수록 문장이 무거워집니다.
+   ------------------------------------------------------------------------ */
+
+.scene--text-only {
+  padding-top: var(--sp-7);
+  padding-bottom: var(--sp-7);
+}
+
+.scene--text-only .headline { margin-bottom: var(--sp-4); }
+
+/* --- 절정 씬의 중앙 정렬 --------------------------------------------------
+   .scene--dark 가 배경과 레이아웃을 담당하고, 여기서는 운문 폭만 제한합니다.
+   ------------------------------------------------------------------------ */
+
+.scene--center-verse .verse,
+.scene--center-verse .eyebrow,
+.scene--center-verse .verse-caption {
+  max-width: var(--content-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ==========================================================================
+   Motion — transform / opacity 만 사용합니다.
+   ========================================================================== */
+
+.reveal {
+  opacity: 0;
+  transition: opacity .85s var(--ease), transform .85s var(--ease);
+  will-change: opacity, transform;
+}
+
+.reveal[data-enter="fade"]       { transform: none; }
+.reveal[data-enter="fade-up"]    { transform: translateY(16px); }
+.reveal[data-enter="fade-up-lg"] { transform: translateY(32px); }
+.reveal[data-enter="image-settle"] { transform: scale(1.04); }
+
+.reveal.in {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+.reveal[data-enter="image-settle"].in { transition-duration: 1.2s; }
+
+/* 절정 전용 — 행이 하나씩 떠오르며 읽는 속도가 느려지고,
+   그때 두운이 인지됩니다. 다른 씬에는 쓰지 않습니다. */
+.scene--dark .verse .line {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .9s var(--ease), transform .9s var(--ease);
+}
+
+.scene--dark.in .verse .line { opacity: 1; transform: none; }
+.scene--dark.in .verse .line:nth-child(1) { transition-delay: .15s; }
+.scene--dark.in .verse .line:nth-child(2) { transition-delay: .40s; }
+.scene--dark.in .verse .line:nth-child(3) { transition-delay: .65s; }
+.scene--dark.in .verse .line:nth-child(4) { transition-delay: .90s; }
+
+.scene--dark .verse-caption {
+  opacity: 0;
+  transition: opacity 1s var(--ease) 1.3s;
+}
+.scene--dark.in .verse-caption { opacity: 1; }
+
+/* ==========================================================================
+   넓은 화면 — 콘텐츠 폭을 제한해 우아하게 확장합니다.
+   ========================================================================== */
+
+@media (min-width: 720px) {
+  .scene { padding-top: var(--sp-7); padding-bottom: var(--sp-7); }
+
+  .scene--photo-split .figure {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   접근성 — 멀미를 느끼는 사람에게 시네마틱 스크롤은 고문입니다.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  .scene--dark .verse .line { opacity: 1; transform: none; }
+  .scene--dark .verse-caption { opacity: 1; }
+  html { scroll-behavior: auto; }
+}
